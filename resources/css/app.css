@@ -21,4 +21,14 @@ body {
     .flex-col-center {
         @apply flex flex-col justify-center items-center
     }
+
+    .btn-primary {
+        @apply p-3 rounded-md text-sm bg-blue-500 text-white font-semibold 
+        transition-colors duration-300 hover:bg-blue-600
+    }
+
+    .btn-secondary {
+        @apply p-3 rounded-md text-sm bg-gray-700 text-white font-semibold 
+        transition-colors duration-300 hover:bg-gray-800 flex-center
+    }
 }

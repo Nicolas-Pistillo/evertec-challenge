@@ -28,10 +28,7 @@
     
             </a>
 
-            <a href="#" class="p-3 rounded text-sm bg-blue-500 text-white 
-            font-semibold transition-colors duration-300 hover:bg-blue-600">
-                Mis compras
-            </a>
+            <a href="#" class="btn-primary">Mis compras</a>
 
         </div>
 

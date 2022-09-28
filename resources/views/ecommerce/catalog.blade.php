@@ -31,7 +31,7 @@
                 <a href="{{ route('ecommerce.checkout', $product->id) }}" 
                 class="block w-full py-2 px-4 rounded-b-lg text-center
                 text-white transition duration-300 font-semibold
-                bg-blue-600 hover:bg-blue-500">
+                bg-blue-500 hover:bg-blue-600">
                     Iniciar compra
                 </a>
 
