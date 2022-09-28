@@ -17,4 +17,8 @@ body {
     .flex-between {
         @apply flex justify-between items-center
     }
+
+    .flex-col-center {
+        @apply flex flex-col justify-center items-center
+    }
 }
