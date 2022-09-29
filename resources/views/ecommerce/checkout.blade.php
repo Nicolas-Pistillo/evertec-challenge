@@ -2,69 +2,75 @@
 
 @section('content')
     
-<div class="md:flex items-start justify-center max-w-4xl mx-auto py-8 px-6 bg-white
-shadow-md transition-shadow duration-300 hover:shadow-xl rounded-md mb-8
-animate__animated animate__fadeInDown">
+  @if ($errors->any())
+      
+    <h2>HAY ERRORES!!!</h2>
 
-    <img src="{{ $product->image }}" class="w-60 h-60 m-auto object-contain" 
-    alt="Product img">
+  @endif
 
-    <div class="md:w-1/2 lg:ml-8 md:ml-6 md:mt-0 mt-6 border-l-2 pl-8">
+  <div class="md:flex items-start justify-center max-w-4xl mx-auto py-8 px-6 bg-white
+  shadow-md transition-shadow duration-300 hover:shadow-xl rounded-md mb-8
+  animate__animated animate__fadeInDown">
 
-        <div class="border-gray-200 pb-3">
+      <img src="{{ $product->image }}" class="w-60 h-60 m-auto object-contain" 
+      alt="Product img">
 
-            <p class="text-sm leading-none text-gray-600 capitalize">
-                {{ $product->category }}
-            </p>
+      <div class="md:w-1/2 lg:ml-8 md:ml-6 md:mt-0 mt-6 border-l-2 pl-8">
 
-            <h2 class="lg:text-2xl text-xl font-semibold lg:leading-6 leading-7 
-            text-gray-800 dark:text-white my-2">
-                {{ $product->name }}
-            </h2>
+          <div class="border-gray-200 pb-3">
+
+              <p class="text-sm font-semibold leading-none text-gray-600 capitalize">
+                  {{ $product->category }}
+              </p>
+
+              <h2 class="lg:text-2xl text-xl font-semibold lg:leading-6 leading-7 
+              text-gray-800 dark:text-white my-2">
+                  {{ $product->name }}
+              </h2>
+              
+              <p class="text-sm leading-none text-gray-600 mb-2">
+                {{ $product->description }}
+              </p>
+
+          </div>
+
+          <div class="py-3">
             
-            <p class="text-sm leading-none text-gray-600 mb-2">
-              {{ $product->description }}
-            </p>
+            <p class="text-sm leading-none font-semibold mb-8">Datos del cliente</p>
 
-        </div>
+            <form action="{{ route('ecommerce.pay', $product) }}" method="POST">
 
-        <div class="py-3">
-          
-          <p class="text-sm leading-none font-semibold mb-8">Datos del cliente</p>
+              @csrf
 
-          <form action="" method="POST">
+              <div class="flex-between mb-6">
 
-            @csrf
+                <x-floating-input class="mr-3" name="client_name" label="Nombre" />
 
-            <div class="flex-between mb-6">
+                <x-floating-input type="number" name="client_mobile" label="Telefono" />
 
-              <x-floating-input class="mr-3" name="client_name" label="Nombre" />
+              </div>
 
-              <x-floating-input type="number" name="client_mobile" label="Telefono" />
+              <div class="relative z-0 mb-6 w-full group">
 
-            </div>
+                <x-floating-input name="client_email" label="Email" />
 
-            <div class="relative z-0 mb-6 w-full group">
+              </div>
 
-              <x-floating-input name="client_email" label="Email" />
+              <button type="submit" class="btn-green w-full">
+                Comprar <i class="material-icons ml-2">shopping_bag</i>
+              </button>
+      
+            </form>
+          </div>
 
-            </div>
+      </div>
 
-            <button type="submit" class="btn-green w-full">
-              Comprar <i class="material-icons ml-2">shopping_bag</i>
-            </button>
-    
-          </form>
-        </div>
+  </div>
 
-    </div>
-
-</div>
-
-<div class="flex-center">
-    <a href="{{ route('ecommerce.index') }}" class="btn-secondary">
-        <i class="material-icons mr-2">arrow_back</i> Volver al catálogo
-    </a>
-</div>
+  <div class="flex-center">
+      <a href="{{ route('ecommerce.index') }}" class="btn-secondary">
+          <i class="material-icons mr-2">arrow_back</i> Volver al catálogo
+      </a>
+  </div>
 
 @endsection
