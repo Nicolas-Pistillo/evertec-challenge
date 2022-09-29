@@ -4,13 +4,17 @@
     
   @if ($errors->any())
       
-    <h2>HAY ERRORES!!!</h2>
+    <div class="p-4 text-white bg-red-600 rounded-md mb-6 flex items-center 
+    shadow-lg font-medium">
+        <i class="material-icons mr-3">error</i> Ocurrio un error al procesar la compra,
+        por favor verifique que todos los campos sean correctos
+    </div>
 
   @endif
 
   <div class="md:flex items-start justify-center max-w-4xl mx-auto py-8 px-6 bg-white
   shadow-md transition-shadow duration-300 hover:shadow-xl rounded-md mb-8
-  animate__animated animate__fadeInDown">
+  animate__animated animate__backInRight">
 
       <img src="{{ $product->image }}" class="w-60 h-60 m-auto object-contain" 
       alt="Product img">
@@ -19,7 +23,7 @@
 
           <div class="border-gray-200 pb-3">
 
-              <p class="text-sm font-semibold leading-none text-gray-600 capitalize">
+              <p class="text-sm font-semibold leading-none text-gray-500 capitalize">
                   {{ $product->category }}
               </p>
 
@@ -36,7 +40,9 @@
 
           <div class="py-3">
             
-            <p class="text-sm leading-none font-semibold mb-8">Datos del cliente</p>
+            <p class="text-sm text-gray-500 leading-none font-semibold mb-8">
+              Datos del cliente
+            </p>
 
             <form action="{{ route('ecommerce.pay', $product) }}" method="POST">
 
@@ -61,6 +67,7 @@
               </button>
       
             </form>
+            
           </div>
 
       </div>

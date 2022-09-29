@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\PlaceToPay;
 use App\Http\Requests\CheckoutPaymentRequest;
+use App\Models\Order;
 use App\Models\Product;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class EcommerceController extends Controller
@@ -20,6 +23,16 @@ class EcommerceController extends Controller
 
     public function payProduct(CheckoutPaymentRequest $request, Product $product)
     {
-        dd($request->validated(), $product);
+        $order = Order::create([
+
+        ]);
+
+        $reference = strtoupper(Str::random(6));
+
+        dd($reference);
+
+        PlaceToPay::test();
+
+        return PlacetoPayController::test();
     }
 }

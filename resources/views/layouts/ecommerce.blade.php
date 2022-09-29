@@ -28,7 +28,7 @@
     
             </a>
 
-            <a href="#" class="btn-primary">Mis compras</a>
+            <!-- <a href="#" class="btn-primary">Mis compras</a> -->
 
         </div>
 
@@ -93,9 +93,8 @@
         </div>
 
         <button @click="open = !open" class="fixed z-40 right-5 bottom-5 shadow-lg 
-        flex justify-center items-center w-14 h-14 bg-indigo-500 rounded-full 
-        focus:outline-none hover:bg-indigo-600 focus:bg-indigo-600 transition 
-        duration-300 ease">
+        flex justify-center items-center w-14 h-14 bg-blue-500 rounded-full 
+        focus:outline-none hover:bg-blue-600 transition duration-300 ease">
             <svg
               class="w-6 h-6 text-white absolute"
               x-show="!open"

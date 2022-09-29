@@ -11,8 +11,8 @@
 
         @foreach ($products as $product)
 
-        <div class="w-80 shadow-md transition-shadow duration-500 hover:shadow-2xl 
-        m-4 bg-white rounded-lg overflow-hidden">
+        <div class="w-80 shadow-md transition duration-500 hover:shadow-2xl 
+        m-4 bg-white rounded-lg overflow-hidden hover:scale-105 ease-out">
 
             <img src="{{ $product->image }}" alt="Foto Prueba"
             class="w-full h-40 object-contain py-3 border-b-2">
@@ -21,9 +21,18 @@
 
                 <div class="pt-6 px-3">
 
-                    <h4 class="font-semibold pb-1">{{ $product->name }}</h4>
+                    <h4 class="font-semibold mb-1">{{ $product->name }}</h4>
 
-                    <b class="text-green-600 pb-2">${{ round($product->price, 2) }}</b>
+                    <div class="flex-between mb-3">
+
+                        <b class="text-green-600">${{ round($product->price, 2) }}</b>
+
+                        <span class="py-1 px-3 text-sm bg-indigo-500 rounded-full 
+                        font-extralight text-white">
+                            {{ $product->category }}
+                        </span>
+
+                    </div>
 
                     <p class="font-light text-sm pb-2">{{ $product->description }}</p>
 
