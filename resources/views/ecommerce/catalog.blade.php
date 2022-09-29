@@ -6,12 +6,13 @@
         Productos
     </h2>
 
-    <section class="products flex-center flex-wrap px-8 
-    animate__animated animate__bounceIn">
+    <section class="products flex-center flex-wrap px-8 animate__animated 
+    animate__fadeIn">
 
         @foreach ($products as $product)
 
-        <div class="w-80 shadow-xl m-4 bg-white rounded-lg overflow-hidden">
+        <div class="w-80 shadow-md transition-shadow duration-500 hover:shadow-2xl 
+        m-4 bg-white rounded-lg overflow-hidden">
 
             <img src="{{ $product->image }}" alt="Foto Prueba"
             class="w-full h-40 object-contain py-3 border-b-2">

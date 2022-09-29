@@ -47,11 +47,13 @@
 
     </header>
 
-    <main class="px-6 pt-24">
+    <main class="px-6 py-24 overflow-hidden">
         @yield('content')
     </main>
 
-    <div x-data="{ open: false }"> 
+    @yield('scripts')
+
+    <div x-data="{ open: false }">
 
         <div x-show="open"
             x-transition:enter-start="opacity-0 translate-y-8"
@@ -140,6 +142,5 @@
         
     </div>
 
-    @yield('scripts')
 </body>
 </html>
