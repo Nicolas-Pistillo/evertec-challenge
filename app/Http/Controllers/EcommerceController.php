@@ -33,6 +33,6 @@ class EcommerceController extends Controller
             'status'            => 'CREATED'
         ]);
 
-        PlaceToPay::pay($order, $product);
+        $ptp = new PlaceToPay($order, $product);
     }
 }
