@@ -50,15 +50,15 @@
 
               <div class="flex-between mb-6">
 
-                <x-floating-input class="mr-3" name="client_name" label="Nombre" />
+                <x-floating-input class="mr-3" name="customer_name" label="Nombre" />
 
-                <x-floating-input type="number" name="client_mobile" label="Telefono" />
+                <x-floating-input type="number" name="customer_mobile" label="Telefono" />
 
               </div>
 
               <div class="relative z-0 mb-6 w-full group">
 
-                <x-floating-input name="client_email" label="Email" />
+                <x-floating-input name="customer_email" label="Email" />
 
               </div>
 

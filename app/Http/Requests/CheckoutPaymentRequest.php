@@ -25,10 +25,10 @@ class CheckoutPaymentRequest extends FormRequest
     public function rules()
     {
         return [
-            'client_name'   => 'required|min:6',
-            'client_email'  => 'required|email',
-            'client_mobile' => 'required|numeric',
-            'product'       => 'exists:products'
+            'customer_name'    => 'required|min:6',
+            'customer_email'   => 'required|email',
+            'customer_mobile'  => 'required|numeric',
+            'product'          => 'exists:products'
         ];
     }
 }
