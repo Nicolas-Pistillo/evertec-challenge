@@ -78,7 +78,7 @@ class PlaceToPay
                 ],
                 'items' => [
                     [
-                        'sku'       => '123456',
+                        'sku'       => $this->product->sku,
                         'name'      => $this->product->name,
                         'category'  => 'physical',
                         'qty'       => '1',
@@ -87,8 +87,8 @@ class PlaceToPay
                 ]
             ],
             'expiration'  => $expiration->format('c'),
-            'returnUrl'   => 'http://localhost:8000/placetopay/return',
-            'cancelUrl'   => 'http://localhost:8000/placetopay/cancel',
+            'returnUrl'   => route('placetopay.return'),
+            'cancelUrl'   => route('placetopay.cancel'),
             'ipAddress'   => '127.0.0.1',
             'userAgent'   => 'PlacetoPay Sandbox'
         ];
