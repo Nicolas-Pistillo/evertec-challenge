@@ -16,6 +16,7 @@ class PlaceToPay
 {
     private Order $order;
     private Product $product;
+    private array $clientData;
 
     private const BASE_URL = 'https://checkout-co.placetopay.dev/api/';
 
@@ -23,8 +24,14 @@ class PlaceToPay
     {
         $this->order = $order;
         $this->product = $product;
+
+        $this->fillClientData();
     }
 
+    /**
+     * Crea los atributos de autorizacion necesarios para cada peticion
+     * @return array
+     */
     private static function createAuthFields()
     {
         $nonce = Str::random(8);
@@ -41,13 +48,14 @@ class PlaceToPay
         ];
     }
 
-    public function createSession()
+    /**
+     * Crea el campo de datos del cliente (payer y buyer), asumiendo que el
+     * mismo comprador es el que pagará la compra
+     * @return void
+     */
+    public function fillClientData()
     {
-        // El cliente tiene 3 horas para pagar
-        $dt = new DateTime();
-        $expiration = $dt->add(new DateInterval('PT3H'));
-
-        $clientData = [
+        $this->clientData = [
             'document'      => '1122334455',
             'documentType'  => 'CC',
             'name'          => $this->order->customer_name,
@@ -64,12 +72,23 @@ class PlaceToPay
                 'phone'      => '+573114785542'
             ]
         ];
+    }
+
+    /**
+     * Solicita una nueva sesión de pago al servicio
+     * @return PlaceToPaySession|bool
+     */
+    public function createSession()
+    {
+        // El cliente tiene 3 horas para pagar
+        $dt = new DateTime();
+        $expiration = $dt->add(new DateInterval('PT3H'));
 
         $params = [
             'locale' => env('APP_LOCALE'),
             'auth' => self::createAuthFields(),
-            'payer' => $clientData,
-            'buyer' => $clientData,
+            'payer' => $this->clientData,
+            'buyer' => $this->clientData,
             'payment' => [
                 'reference'     => $this->order->reference,
                 'description'   => 'Compra de prueba',
@@ -104,24 +123,38 @@ class PlaceToPay
             return false;
         }
 
-        PlaceToPaySession::create([
-            'request_id'   => $response->requestId,
-            'process_url'  => $response->processUrl,
-            'order_id'     => $this->order->id
+        $ptpSession = PlaceToPaySession::create([
+            'request_id'    => $response->requestId,
+            'process_url'   => $response->processUrl,
+            'order_id'      => $this->order->id,
+            'expiration'    => $expiration->format('Y-m-d H:i:s'),
+            'status'        => 'PENDING',
+            'message'       => 'La petición se encuentra pendiente'
         ]);
 
-        session(['ptp_session' => $response->requestId]);
+        // Guardamos el request Id de la sesión de pago actual
+        session(['ptp_request_id' => $response->requestId]);
 
-        return $response;
+        // Y guardamos el ID del registro en la sesion del cliente
+        session()->push('ptp_sessions_id', $ptpSession->id);
 
+        return $ptpSession;
     }
 
+    /**
+     * Consulta la información de una sesión de pago segun su request ID
+     * @return object|bool
+     */
     public static function getSessionInfo(int $requestId)
     {
         $response = Http::post(self::BASE_URL . "session/$requestId", [
             'auth' => self::createAuthFields()
         ]);
 
-        return $response->object();
+        $info = $response->object();
+
+        if (!$info || !isset($info->status)) return false;
+
+        return $info;
     }
 }

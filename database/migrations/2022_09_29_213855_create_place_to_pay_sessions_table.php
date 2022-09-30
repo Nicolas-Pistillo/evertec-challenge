@@ -18,6 +18,9 @@ return new class extends Migration
             $table->integer('request_id');
             $table->string('process_url', 150);
             $table->unsignedInteger('order_id');
+            $table->dateTime('expiration');
+            $table->string('status', 50)->nullable();
+            $table->string('message', 150)->nullable();
             $table->timestamps();
         });
     }

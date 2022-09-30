@@ -19,7 +19,7 @@
       <img src="{{ $product->image }}" class="w-60 h-60 m-auto object-contain" 
       alt="Product img">
 
-      <div class="md:w-1/2 lg:ml-8 md:ml-6 md:mt-0 mt-6 border-l-2 pl-8">
+      <div class="pl-3 md:w-1/2 md:pl-8 lg:ml-8 md:ml-6 md:mt-0 mt-6 border-l-2">
 
           <div class="border-gray-200 pb-3">
 

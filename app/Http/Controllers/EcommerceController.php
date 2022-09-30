@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Classes\PlaceToPay;
-use App\Enums\OrderStatus;
 use App\Http\Requests\CheckoutPaymentRequest;
 use App\Models\Order;
 use App\Models\Product;
@@ -12,26 +11,27 @@ use Illuminate\Http\Request;
 
 class EcommerceController extends Controller
 {
+    /**
+     * Catálogo de productos
+     */
     public function index()
     {
         return view('ecommerce.catalog', ['products' => Product::all()]);
     }
 
+    /**
+     * Detalles de producto e ingreso de datos para comprarlo
+     */
     public function checkout(Product $product)
     {
         return view('ecommerce.checkout', compact('product'));
     }
 
+    /**
+     * Creación y redireccion al WebCheckout para pagar
+     */
     public function openWebCheckout(CheckoutPaymentRequest $request, Product $product)
     {
-        /**
-         * Tarjeta de prueba
-         * 
-         * Numero: 4012888888881881
-         * Expiracion: 11/28
-         * CVV: 917
-        */
-
         $order = Order::create([
             'reference'         => strtoupper(Str::random(6)),
             'product_id'        => $product->id,
@@ -43,11 +43,10 @@ class EcommerceController extends Controller
 
         $ptp = new PlaceToPay($order, $product);
 
-        $session = $ptp->createSession();
+        $ptpSession = $ptp->createSession();
 
-        if (!$session) dd('ERROOOOOR');
+        if (!$ptpSession) return back()->with('service_error', true);
 
-        return redirect($session->processUrl);
-
+        return redirect($ptpSession->process_url);
     }
 }
