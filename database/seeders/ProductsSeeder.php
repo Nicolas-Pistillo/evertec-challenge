@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Product;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 
 class ProductsSeeder extends Seeder
@@ -16,6 +17,7 @@ class ProductsSeeder extends Seeder
     {
         Product::create([
             'name'          => 'Mochila Azul',
+            'sku'           => strtoupper(Str::random(15)),
             'category'      => 'accesorios',
             'description'   => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat placeat, a explicabo eligendi voluptatibus.',
             'price'         => 1500.65,
@@ -24,6 +26,7 @@ class ProductsSeeder extends Seeder
 
         Product::create([
             'name'          => 'Camisa deportiva',
+            'sku'           => strtoupper(Str::random(15)),
             'category'      => 'ropa',
             'description'   => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat placeat, a explicabo eligendi voluptatibus.',
             'price'         => 2841.75,
@@ -32,6 +35,7 @@ class ProductsSeeder extends Seeder
 
         Product::create([
             'name'          => 'Anillo de plata',
+            'sku'           => strtoupper(Str::random(15)),
             'category'      => 'joyeria',
             'description'   => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat placeat, a explicabo eligendi voluptatibus.',
             'price'         => 7430,

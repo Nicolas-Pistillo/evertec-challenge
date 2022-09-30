@@ -34,5 +34,7 @@ class EcommerceController extends Controller
         ]);
 
         $ptp = new PlaceToPay($order, $product);
+
+        dd($ptp->createSession());
     }
 }

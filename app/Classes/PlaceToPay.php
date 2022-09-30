@@ -3,15 +3,20 @@
 namespace App\Classes;
 
 use App\Models\Order;
+use App\Models\PlaceToPaySession;
 use App\Models\Product;
+use DateInterval;
 use Illuminate\Support\Str;
 use DateTime;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class PlaceToPay 
 {
-    public Order $order;
-    public Product $product;
+    private Order $order;
+    private Product $product;
+
+    private string $baseUrl = 'https://checkout-co.placetopay.dev/api/';
 
     public function __construct(Order $order, Product $product)
     {
@@ -19,75 +24,92 @@ class PlaceToPay
         $this->product = $product;
     }
 
-    public function getWebCheckout()
+    private function createAuthFields()
     {
         $nonce = Str::random(8);
 
         $seed = (new DateTime())->format('c');
 
-        $expiration = date('c', strtotime('+2 hours'));
-
         $trankey = base64_encode(sha1($nonce . $seed . env('PLACETOPAY_SECRET'), true));
+
+        return [
+            'login'   => env('PLACETOPAY_LOGIN'),
+            'tranKey' => $trankey,
+            'nonce'   => base64_encode($nonce),
+            'seed'    => $seed
+        ];
+    }
+
+    public function createSession()
+    {
+        // El cliente tiene 3 horas para pagar
+        $dt = new DateTime();
+        $expiration = $dt->add(new DateInterval('PT3H'));
+
+        $clientData = [
+            'document'      => '1122334455',
+            'documentType'  => 'CC',
+            'name'          => $this->order->customer_name,
+            'surname'       => "Test",
+            'company'       => "Evertec",
+            'email'         => $this->order->customer_email,
+            'mobile'        => $this->order->customer_mobile,
+            'address'       => [
+                'street'     => 'Calle falsa 123',
+                'city'       => 'Medellín',
+                'state'      => 'Poblado',
+                'postalCode' => '55555',
+                'country'    => 'Colombia',
+                'phone'      => '+573114785542'
+            ]
+        ];
 
         $params = [
             'locale' => env('APP_LOCALE'),
-            'auth' => [
-                'login'     => env('PLACETOPAY_LOGIN'),
-                'tranKey'   => $trankey,
-                'nonce'     => base64_encode($nonce),
-                'seed'      => $seed
-            ],
-            'payer' => [
-                'document'      => '1122334455',
-                'documentType'  => 'CC',
-                'name'          => "John",
-                'surname'       => "Doe",
-                'company'       => "Evertec",
-                'email'         => "johndoe@app.com",
-                'mobile'        => "+573114785542",
-                'address'       => [
-                    'street'     => 'Calle falsa 123',
-                    'city'       => 'Medellín',
-                    'state'      => 'Poblado',
-                    'postalCode' => '55555',
-                    'country'    => 'Colombia',
-                    'phone'      => '+573114785542'
-                ]
-            ],
-            'buyer' => [
-                'document'      => '1122334455',
-                'documentType'  => 'CC',
-                'name'          => "John",
-                'surname'       => "Doe",
-                'company'       => "Evertec",
-                'email'         => "johndoe@app.com",
-                'mobile'        => "+573114785542",
-                'address'       => [
-                    'street'     => 'Calle falsa 123',
-                    'city'       => 'Medellín',
-                    'state'      => 'Poblado',
-                    'postalCode' => '55555',
-                    'country'    => 'Colombia',
-                    'phone'      => '+573114785542'
-                ]
-            ],
+            'auth' => $this->createAuthFields(),
+            'payer' => $clientData,
+            'buyer' => $clientData,
             'payment' => [
-                'reference'     => '1122334455',
-                'description'   => 'Prueba test',
+                'reference'     => $this->order->reference,
+                'description'   => 'Compra de prueba',
                 'amount'        => [
                     'currency' => 'COP',
-                    'total'    => 1500
+                    'total'    => $this->product->price
+                ],
+                'items' => [
+                    [
+                        'sku'       => '123456',
+                        'name'      => $this->product->name,
+                        'category'  => 'physical',
+                        'qty'       => '1',
+                        'price'     => $this->product->price
+                    ]
                 ]
             ],
-            'expiration'  => $expiration,
+            'expiration'  => $expiration->format('c'),
             'returnUrl'   => 'http://localhost:8000/placetopay/return',
             'cancelUrl'   => 'http://localhost:8000/placetopay/cancel',
             'ipAddress'   => '127.0.0.1',
             'userAgent'   => 'PlacetoPay Sandbox'
         ];
 
-        $request = Http::post('https://checkout-co.placetopay.dev/api/session', $params);
+        $response = Http::post($this->baseUrl . 'session', $params)->object();
 
-        dd($request->object());
+        if ($response->status->status === 'FAILED')
+        {
+            $msg = "Error al crear sesión: {$response->status->message}";
+            Log::channel('placetopay')->error($msg);
+
+            return false;
+        }
+
+        PlaceToPaySession::create([
+            'request_id'   => $response->requestId,
+            'process_url'  => $response->processUrl,
+            'order_id'     => $this->order->id
+        ]);
+
+        return $response->processUrl;
+
     }
 }
