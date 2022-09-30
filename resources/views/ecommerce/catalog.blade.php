@@ -28,7 +28,7 @@
                         <b class="text-green-600">${{ round($product->price, 2) }}</b>
 
                         <span class="py-1 px-3 text-sm bg-indigo-500 rounded-full 
-                        font-extralight text-white">
+                        font-extralight text-white capitalize">
                             {{ $product->category }}
                         </span>
 

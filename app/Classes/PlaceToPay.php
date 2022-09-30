@@ -10,13 +10,14 @@ use Illuminate\Support\Str;
 use DateTime;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 
 class PlaceToPay 
 {
     private Order $order;
     private Product $product;
 
-    private string $baseUrl = 'https://checkout-co.placetopay.dev/api/';
+    private const BASE_URL = 'https://checkout-co.placetopay.dev/api/';
 
     public function __construct(Order $order, Product $product)
     {
@@ -24,7 +25,7 @@ class PlaceToPay
         $this->product = $product;
     }
 
-    private function createAuthFields()
+    private static function createAuthFields()
     {
         $nonce = Str::random(8);
 
@@ -66,7 +67,7 @@ class PlaceToPay
 
         $params = [
             'locale' => env('APP_LOCALE'),
-            'auth' => $this->createAuthFields(),
+            'auth' => self::createAuthFields(),
             'payer' => $clientData,
             'buyer' => $clientData,
             'payment' => [
@@ -87,13 +88,13 @@ class PlaceToPay
                 ]
             ],
             'expiration'  => $expiration->format('c'),
-            'returnUrl'   => route('placetopay.return'),
-            'cancelUrl'   => route('placetopay.cancel'),
+            'returnUrl'   => route('placetopay.callback'),
+            'cancelUrl'   => route('placetopay.callback'),
             'ipAddress'   => '127.0.0.1',
             'userAgent'   => 'PlacetoPay Sandbox'
         ];
 
-        $response = Http::post($this->baseUrl . 'session', $params)->object();
+        $response = Http::post(self::BASE_URL . 'session', $params)->object();
 
         if ($response->status->status === 'FAILED')
         {
@@ -109,7 +110,18 @@ class PlaceToPay
             'order_id'     => $this->order->id
         ]);
 
-        return $response->processUrl;
+        session(['ptp_session' => $response->requestId]);
 
+        return $response;
+
+    }
+
+    public static function getSessionInfo(int $requestId)
+    {
+        $response = Http::post(self::BASE_URL . "session/$requestId", [
+            'auth' => self::createAuthFields()
+        ]);
+
+        return $response->object();
     }
 }

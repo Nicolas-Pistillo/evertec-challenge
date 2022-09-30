@@ -9,11 +9,8 @@ Route::get('/', [EcommerceController::class, 'index'])->name('ecommerce.index');
 Route::get('checkout/{product}', [EcommerceController::class, 'checkout'])
     ->name('ecommerce.checkout');
 
-Route::post('checkout/{product}', [EcommerceController::class, 'payProduct'])
+Route::post('checkout/{product}', [EcommerceController::class, 'openWebCheckout'])
     ->name('ecommerce.pay');
 
-Route::get('placetopay/return', [PlaceToPayController::class, 'return'])
-    ->name('placetopay.return');
-
-Route::get('placetopay/cancel', [PlaceToPayController::class, 'cancel'])
-    ->name('placetopay.cancel');
+Route::get('placetopay/callback', PlaceToPayController::class)
+    ->name('placetopay.callback');

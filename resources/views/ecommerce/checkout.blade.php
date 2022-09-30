@@ -62,9 +62,7 @@
 
               </div>
 
-              <button type="submit" class="btn-green w-full">
-                Comprar <i class="material-icons ml-2">shopping_bag</i>
-              </button>
+              <button type="submit" class="btn-green w-full text-base">Comprar</button>
       
             </form>
             
