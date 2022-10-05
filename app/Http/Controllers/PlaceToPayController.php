@@ -21,7 +21,7 @@ class PlaceToPayController extends Controller
 
         if (!$operation)
         {
-            dd('Algo salio mal');
+            dd('Sesión de pago no encontrada o expirada');
         }
 
         $ptpSession = PlaceToPaySession::where('request_id', $ptpRequestId)->first(); 
@@ -31,10 +31,10 @@ class PlaceToPayController extends Controller
             $ptpSession->update([
                 'status'  => $operation->status->status,
                 'message' => $operation->status->message
-            ]);            
+            ]);
         }
 
-        dd($ptpSession);
+        dd($operation);
 
     }
 }

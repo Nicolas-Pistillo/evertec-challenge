@@ -15,4 +15,9 @@ class PlaceToPaySession extends Model
     {
         return $this->belongsTo(Order::class);
     }
+
+    public function product()
+    {
+        return $this->order->product;
+    }
 }
