@@ -24,8 +24,7 @@ class PlaceToPayController extends Controller
             dd('Algo salio mal');
         }
 
-        $ptpSession = PlaceToPaySession::where('request_id', $ptpRequestId)
-                        ->first(); 
+        $ptpSession = PlaceToPaySession::where('request_id', $ptpRequestId)->first(); 
 
         if ($operation->status->status != $ptpSession->status)
         {

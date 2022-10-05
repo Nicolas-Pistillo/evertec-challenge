@@ -14,11 +14,13 @@ use Illuminate\Support\Facades\Session;
 
 class PlaceToPay 
 {
+    private const BASE_URL = 'https://checkout-co.placetopay.dev/api/';
+
     private Order $order;
     private Product $product;
-    private array $clientData;
 
-    private const BASE_URL = 'https://checkout-co.placetopay.dev/api/';
+    private array $clientData;
+    private array $productData;
 
     public function __construct(Order $order, Product $product)
     {
@@ -26,6 +28,7 @@ class PlaceToPay
         $this->product = $product;
 
         $this->fillClientData();
+        $this->fillProductData();
     }
 
     /**
@@ -75,7 +78,25 @@ class PlaceToPay
     }
 
     /**
-     * Solicita una nueva sesión de pago al servicio
+     * Crea el campo items, que corresponde al único producto con precio fijo
+     * que el cliente puede comprar en la tienda
+     * @return void
+     */
+    public function fillProductData()
+    {
+        $this->productData = [
+            [
+                'sku'       => $this->product->sku,
+                'name'      => $this->product->name,
+                'category'  => 'physical',
+                'qty'       => '1',
+                'price'     => $this->product->price
+            ]
+        ];
+    }
+
+    /**
+     * Solicita una nueva sesión de pago a PlaceToPay
      * @return PlaceToPaySession|bool
      */
     public function createSession()
@@ -96,15 +117,7 @@ class PlaceToPay
                     'currency' => 'COP',
                     'total'    => $this->product->price
                 ],
-                'items' => [
-                    [
-                        'sku'       => $this->product->sku,
-                        'name'      => $this->product->name,
-                        'category'  => 'physical',
-                        'qty'       => '1',
-                        'price'     => $this->product->price
-                    ]
-                ]
+                'items' => $this->productData
             ],
             'expiration'  => $expiration->format('c'),
             'returnUrl'   => route('placetopay.callback'),

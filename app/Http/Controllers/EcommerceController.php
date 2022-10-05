@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 
 class EcommerceController extends Controller
 {
@@ -46,6 +47,8 @@ class EcommerceController extends Controller
         $ptpSession = $ptp->createSession();
 
         if (!$ptpSession) return back()->with('service_error', true);
+
+        $order->update(['ptp_session_id' => $ptpSession->id]);
 
         return redirect($ptpSession->process_url);
     }
