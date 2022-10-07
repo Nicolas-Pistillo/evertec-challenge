@@ -17,6 +17,8 @@ class PlaceToPayController extends Controller
     {
         $ptpRequestId = session('ptp_request_id');
 
+        if (!$ptpRequestId) return redirect('/');
+
         $operation = PlaceToPay::getSessionInfo($ptpRequestId);
 
         if (!$operation) return back();
@@ -34,8 +36,8 @@ class PlaceToPayController extends Controller
         }
 
         return view('ecommerce.purchase-result', [
-            'status'   => $operation->status->status,
-            'purchase' => $ptpSession
+            'statusContext' => config("payments_return.{$ptpSession->status}"),
+            'purchase'      => $ptpSession
         ]);
 
     }

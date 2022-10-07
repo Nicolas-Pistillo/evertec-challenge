@@ -30,6 +30,7 @@ class Orders extends Component
     public function clearOrders()
     {
         Session::flush();
+        $this->purchases = collect();
     }
 
     public function render()
