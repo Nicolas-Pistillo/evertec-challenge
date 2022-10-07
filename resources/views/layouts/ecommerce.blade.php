@@ -11,7 +11,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
     @yield('head')
-    <title>Evertec Challenge</title>
+    <title>@yield('title', 'Evertec Challenge')</title>
 </head>
 <body class="bg-gray-200 relative">
    
@@ -28,8 +28,6 @@
                 <h4 class="text-lg font-semibold">Ecommerce</h4>
     
             </a>
-
-            <!-- <a href="#" class="btn-primary">Mis compras</a> -->
 
         </div>
 
@@ -49,7 +47,9 @@
     </header>
 
     <main class="px-6 py-24 overflow-hidden">
+
         @yield('content')
+        
     </main>
 
     @yield('scripts')
@@ -65,16 +65,13 @@
         x-transition:leave-end="opacity-0 translate-y-5"
         @click.away="open = false"
         class="fixed flex flex-col z-50 bottom-[100px] top-5
-        right-5 h-[calc(100& - 20px)] w-[350px] overflow-auto border 
+        right-5 h-[calc(100& - 20px)] w-[380px] overflow-auto border 
         border-gray-300 bg-white shadow-2xl rounded-lg">
     
             <div class="flex px-4 py-6 flex-col-center bg-blue-600">
                 <h3 class="text-lg text-white font-semibold">
                     ¡Bienvenido a mi Ecommerce!
                 </h3>
-                <p class="text-white">
-                    Aquí veras tus compras y su estado
-                </p>
             </div>
     
             <div class="bg-gray-50 flex-grow"> 
@@ -89,46 +86,23 @@
         flex justify-center items-center w-14 h-14 bg-blue-500 rounded-full 
         focus:outline-none hover:bg-blue-600 transition duration-300 ease">
 
-            <svg class="w-6 h-6 text-white absolute"
-              x-show="!open"
-              x-transition:enter-start="opacity-0 -rotate-45 scale-75"
-              x-transition:enter="transition duration-200 transform ease"
-              x-transition:leave="transition duration-100 transform ease"
-              x-transition:leave-end="opacity-0 -rotate-45"
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round">
-              <path
-                d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
-              ></path>
-            </svg>
+            <i class="material-icons w-6 h-6 text-white absolute"
+            x-show="!open"
+            x-transition:enter-start="opacity-0 -rotate-45 scale-75"
+            x-transition:enter="transition duration-200 transform ease"
+            x-transition:leave="transition duration-100 transform ease"
+            x-transition:leave-end="opacity-0 -rotate-45">
+                local_mall
+            </i>
     
-            <svg class="w-6 h-6 text-white absolute"
-              x-show="open"
-              x-transition:enter-start="opacity-0 rotate-45 scale-75"
-              x-transition:enter="transition duration-200 transform ease"
-              x-transition:leave="transition duration-100 transform ease"
-              x-transition:leave-end="opacity-0 rotate-45"
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round">
-
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-
-            </svg>
+            <i class="material-icons w-6 h-6 text-white absolute"
+            x-show="open"
+            x-transition:enter-start="opacity-0 rotate-45 scale-75"
+            x-transition:enter="transition duration-200 transform ease"
+            x-transition:leave="transition duration-100 transform ease"
+            x-transition:leave-end="opacity-0 rotate-45">
+                close
+            </i>
 
         </button>
         

@@ -19,12 +19,11 @@ class PlaceToPayController extends Controller
 
         $operation = PlaceToPay::getSessionInfo($ptpRequestId);
 
-        if (!$operation)
-        {
-            dd('Sesión de pago no encontrada o expirada');
-        }
+        if (!$operation) return back();
 
-        $ptpSession = PlaceToPaySession::where('request_id', $ptpRequestId)->first(); 
+        $ptpSession = PlaceToPaySession::where('request_id', $ptpRequestId)
+                        ->with('order.product')
+                        ->first(); 
 
         if ($operation->status->status != $ptpSession->status)
         {
@@ -34,7 +33,10 @@ class PlaceToPayController extends Controller
             ]);
         }
 
-        dd($operation);
+        return view('ecommerce.purchase-result', [
+            'status'   => $operation->status->status,
+            'purchase' => $ptpSession
+        ]);
 
     }
 }

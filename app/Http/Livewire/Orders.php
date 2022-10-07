@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\PlaceToPaySession;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
@@ -12,6 +13,8 @@ class Orders extends Component
 
     public function mount()
     {
+        $this->purchases = collect();
+
         if (Session::exists('ptp_sessions_id'))
         {
             $ids = Session::get('ptp_sessions_id');
@@ -22,6 +25,11 @@ class Orders extends Component
 
             $this->purchases = $models;
         }
+    }
+
+    public function clearOrders()
+    {
+        Session::flush();
     }
 
     public function render()
