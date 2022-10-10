@@ -113,7 +113,7 @@
 
             let widget = document.getElementById('widget')
             
-            setTimeout(() => widget.classList.remove('hidden'), 1500);
+            setTimeout(() => widget.classList.remove('hidden'), 1000);
 
         })
     </script>

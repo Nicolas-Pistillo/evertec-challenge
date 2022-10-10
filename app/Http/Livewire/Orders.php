@@ -27,6 +27,11 @@ class Orders extends Component
         }
     }
 
+    public function reOpenCheckout(PlaceToPaySession $purchase)
+    {
+        Session::put('ptp_request_id', $purchase->request_id);
+    }
+
     public function clearOrders()
     {
         Session::flush();

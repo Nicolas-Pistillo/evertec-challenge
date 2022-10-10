@@ -16,7 +16,7 @@
     @forelse ($purchases as $purchase)
         
         <div class="h-16 flex-between transition-shadow duration-300
-        hover:shadow-lg text-center">
+        hover:shadow-xl text-center" wire:key='{{ $purchase->id }}'>
 
             <div class="h-full flex items-center px-2">
 
@@ -27,8 +27,8 @@
 
                     <h4 class="font-semibold">{{ $purchase->product()->name }}</h4>
 
-                    <small class="capitalize text-xs text-gray-600">
-                        {{ $purchase->product()->category }}
+                    <small class="capitalize text-xs font-semibold text-gray-600">
+                        #{{ $purchase->order->reference }}
                     </small>
                 </div>
 
@@ -36,9 +36,26 @@
 
             <div class="h-full flex-col-center px-2">
 
-                <h4 class="font-semibold text-indigo-600 text-sm">
-                    {{ $purchase->order->status }}
-                </h4>
+                <div class="flex-center">
+
+                    <h4 class="font-semibold text-indigo-600 text-sm">
+                        {{ $purchase->order->status }}
+                    </h4>
+
+                    @if ($purchase->status === 'PENDING')
+                        
+                        <a href="{{ $purchase->process_url }}" style="font-size: 20px"
+                        target="_blank" title="Finalizar compra" 
+                        wire:click="reOpenCheckout({{ $purchase }})"
+                        class="material-icons ml-2 p-2 bg-gray-300 rounded-full
+                        transition-colors duration-300 hover:bg-indigo-600 
+                        hover:text-white">
+                            open_in_new
+                        </a>
+
+                    @endif
+
+                </div>
 
                 <small class="capitalize text-xs text-gray-600">
                     {{ $purchase->updated_at->format('d/m/Y H:i:s') }}

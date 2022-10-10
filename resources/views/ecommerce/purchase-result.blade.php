@@ -4,13 +4,36 @@
 
 @section('content')
 
+    @php
+        $background = 'bg-gray-500';
+        $textColor = 'text-gray-500';
+
+        switch ($purchase->status) 
+        {
+            case 'APPROVED': 
+                $background = 'bg-green-500';
+                $textColor = 'text-green-500';
+            break;
+
+            case 'PENDING':  
+                $background = 'bg-orange-500';
+                $textColor = 'text-orange-500';
+            break;
+
+            case 'REJECTED':
+                $background = 'bg-red-500';
+                $textColor = 'text-red-500';
+            break;
+        }
+    @endphp
+
     <section class="mt-16 flex-center">
 
         <div class="relative w-3/4 lg:w-1/2 mx-auto bg-white transition-shadow 
         duration-300 shadow-md hover:shadow-2xl rounded-md">
 
-            <div class=" {{ $statusContext['background-color'] }}
-            absolute top-0 left-0 z-0 w-full h-12 rounded-t-md"></div>
+            <div class="{{ $background }} absolute top-0 left-0 z-0 w-full 
+            h-12 rounded-t-md"></div>
 
             <img src="{{ $purchase->product()->image }}" alt="Product img"
             class="w-20 h-20 object-contain mx-auto rounded-full -mt-14 
@@ -24,9 +47,8 @@
                 Orden #{{ $purchase->order->reference }}
             </div>
 
-            <h2 class=" {{ $statusContext['text-color'] }} text-center 
-            font-semibold text-lg">
-                {{ $statusContext['title'] }}
+            <h2 class=" {{ $textColor }} text-center font-semibold text-lg">
+                {{ $purchase->status }}
             </h2>
 
             <p class="px-6 text-center mt-2 font-light text-sm">
