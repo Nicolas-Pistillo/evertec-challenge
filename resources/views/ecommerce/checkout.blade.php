@@ -44,7 +44,8 @@
               Datos del cliente
             </p>
 
-            <form action="{{ route('ecommerce.pay', $product) }}" method="POST">
+            <form method="POST" action="{{ route('ecommerce.pay', $product) }}" 
+            x-data="{ submited: false }" @submit="submited = true">
 
               @csrf
 
@@ -62,7 +63,10 @@
 
               </div>
 
-              <button type="submit" class="btn-green w-full text-base">Comprar</button>
+              <button type="submit" :disabled="submited"
+              class="w-full text-base" :class="submited ? 'btn-disabled' : 'btn-green'"
+              x-text="submited ? 'Espere...' : 'Comprar'">
+              </button>
       
             </form>
             

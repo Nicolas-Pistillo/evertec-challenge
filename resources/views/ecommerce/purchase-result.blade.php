@@ -83,33 +83,6 @@
 
             </div>
 
-            {{-- 
-
-                <hr class="mt-4 border-2">
-
-                <div class="flex p-4">
-
-                    <div class="w-1/2 text-center">
-
-                        <a href="{{ route('ecommerce.index') }}" class="btn-primary">
-                            Volver al catalogo
-                        </a>
-
-                    </div>
-
-                    <div class="w-0 border border-gray-300 mx-4"></div>
-
-                    <div class="w-1/2 text-center">
-                            
-                        <a href="{{ $purchase->process_url }}" class="btn-secondary">
-                            Reintentar compra
-                        </a>
-
-                    </div>
-
-                </div>
-            
-            --}}
         </div>
 
     </section>

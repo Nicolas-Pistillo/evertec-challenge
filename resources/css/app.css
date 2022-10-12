@@ -37,6 +37,11 @@ body {
         transition-colors duration-300 hover:bg-green-500 flex-center
     }
 
+    .btn-disabled {
+        @apply p-3 rounded-md text-sm bg-gray-300 text-gray-500 font-semibold 
+        flex-center border-2 transition-colors duration-300 border-gray-300
+    }
+
     .form-input {
         @apply  block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent 
         border-0 border-b-2 border-gray-300 appearance-none focus:ring-0
