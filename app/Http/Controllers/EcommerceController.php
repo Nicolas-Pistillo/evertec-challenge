@@ -8,7 +8,6 @@ use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Session;
 
 class EcommerceController extends Controller
 {
