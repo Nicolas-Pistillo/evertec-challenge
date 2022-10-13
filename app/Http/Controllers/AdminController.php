@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PlaceToPaySession;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,9 +24,20 @@ class AdminController extends Controller
         return back()->withErrors(['email' => 'Credenciales incorrectas']);
     }
 
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('admin.index');
+    }
+
     public function orders()
     {
-        $orders = PlaceToPaySession::with('order.product')->get();
-        return view('admin.orders', $orders);
+        $orders = Order::with('product')->get();
+
+        return view('admin.orders', compact('orders'));
     }
 }

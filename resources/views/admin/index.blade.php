@@ -10,7 +10,7 @@
                 <div class="flex items-center h-full px-20 bg-gray-900 bg-opacity-40">
                     <div class="animate__animated animate__fadeInDown text-white">
 
-                        <h2 class="text-4xl font-bold">Administrador</h2>
+                        <h2 class="text-4xl font-bold">Panel de administración</h2>
                         
                         <p class="max-w-xl mt-3">
                             Gestiona el estado y las ventas de tu tienda en linea
@@ -43,7 +43,7 @@
 
                             <x-floating-input class="my-5" name="email" label="Email" />
 
-                            <x-floating-input class="mb-5" name="password" label="Contraseña" />
+                            <x-floating-input class="mb-8" name="password" label="Contraseña" />
 
                             @if ($errors->any())
                                 <small class="text-red-500 block animate__animated 

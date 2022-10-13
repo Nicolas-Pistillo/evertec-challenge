@@ -26,6 +26,10 @@ Route::view('admin', 'admin.index')->name('admin.index')->middleware('guest');
 // Inicio de sesion para administradores
 Route::post('login', [AdminController::class, 'login'])->name('admin.login');
 
+// Cierre de sesion
+Route::get('logout', [AdminController::class, 'logout'])->name('admin.logout')
+    ->middleware('auth');
+
 // Ordenes de la tienda
 Route::get('admin/orders', [AdminController::class, 'orders'])->name('admin.orders')
     ->middleware('auth');
