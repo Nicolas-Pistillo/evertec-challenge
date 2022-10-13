@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <h2 class="text-center text-xl font-semibold mb-8" style="letter-spacing: 2px">
+    <h2 class="text-xl font-semibold text-gray-700 text-center mb-8">
         Productos
     </h2>
 

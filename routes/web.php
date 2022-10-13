@@ -8,12 +8,6 @@ use Illuminate\Support\Facades\Route;
 // Catalogo de productos
 Route::get('/', [EcommerceController::class, 'index'])->name('ecommerce.index');
 
-// Pantalla de login para adminstrador de tienda
-Route::view('admin', 'admin.login')->name('admin.index');
-
-// Inicio de sesion para administradores
-Route::post('login', [AdminController::class, 'login'])->name('admin.login');
-
 // Detalles de producto
 Route::get('checkout/{product}', [EcommerceController::class, 'checkout'])
     ->name('ecommerce.checkout');
@@ -25,3 +19,13 @@ Route::post('checkout/{product}', [EcommerceController::class, 'openWebCheckout'
 // Callback de PlaceToPay al finalizar una transaccion
 Route::get('placetopay/callback', PlaceToPayController::class)
     ->name('placetopay.callback');
+
+// Pantalla de login para adminstrador de tienda
+Route::view('admin', 'admin.index')->name('admin.index')->middleware('guest');
+
+// Inicio de sesion para administradores
+Route::post('login', [AdminController::class, 'login'])->name('admin.login');
+
+// Ordenes de la tienda
+Route::get('admin/orders', [AdminController::class, 'orders'])->name('admin.orders')
+    ->middleware('auth');
